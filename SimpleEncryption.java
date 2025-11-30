@@ -4,24 +4,35 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
 public class SimpleEncryption {
-    public static void main(String[] args) throws Exception {
-        // Create a secret key
+
+    private static SecretKey generateKey() throws Exception {
         KeyGenerator keyG = KeyGenerator.getInstance("AES");
         keyG.init(128);
-        SecretKey secretKey = keyG.generateKey();
+        return keyG.generateKey();
+    }
 
+    public static String encrypt(SecretKey key, String data) throws Exception {
+        Cipher encryptor = Cipher.getInstance("AES");
+        encryptor.init(Cipher.ENCRYPT_MODE, key);
+        byte[] enc = encryptor.doFinal(data.getBytes("UTF-8"));
+        return Base64.getEncoder().encodeToString(enc);
+    }
+
+    public static String decrypt(SecretKey key, String encryptedData) throws Exception {
+        Cipher encryptor = Cipher.getInstance("AES");
+        encryptor.init(Cipher.DECRYPT_MODE, key);
+        byte[] enc = Base64.getDecoder().decode(encryptedData);
+        return new String(encryptor.doFinal(enc), "UTF-8");
+    }
+    
+    public static void main(String[] args) throws Exception {
+        SecretKey secretKey = generateKey();
         String data = "UserCard=4111111111111111";
 
-        // Encrypt
-        Cipher encryptor = Cipher.getInstance("AES");
-        encryptor.init(Cipher.ENCRYPT_MODE, secretKey);
-        byte[] enc = encryptor.doFinal(data.getBytes());
-        System.out.println("Encrypted: " + Base64.getEncoder().encodeToString(enc));
+        String encrypted = encrypt(secretKey, data);
+        System.out.println("Encrypted: " + encrypted);
 
-        // Decrypt
-        encryptor.init(Cipher.DECRYPT_MODE, secretKey);
-        String decryptedData = new String(encryptor.doFinal(enc));
-        System.out.println("Decrypted: " + decryptedData);
-
+        String decrypted = decrypt(secretKey, encrypted);
+        System.out.println("Decrypted: " + decrypted);
     }
 }
