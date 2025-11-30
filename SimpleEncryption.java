@@ -34,5 +34,14 @@ public class SimpleEncryption {
 
         String decrypted = decrypt(secretKey, encrypted);
         System.out.println("Decrypted: " + decrypted);
+
+        
+        // Non-Functional Test: Performance
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < 1000; i++) {
+        encrypt(secretKey, data);
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("Performance Test (1000 encryptions): " + (end - start) + " ms");
     }
 }
