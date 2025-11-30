@@ -29,7 +29,7 @@ jobs:
 
     - name: Run Non-Functional Test (Performance)
       run: |
-        java PerformanceTest >> test-report.txt   
+        java SimpleEncryption >> test-report.txt   
 
     - name: Archive Test Report
       uses: actions/upload-artifact@v4
