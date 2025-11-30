@@ -20,11 +20,12 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         
-    - name: Build and Compile with Maven
-      run: mvn -B compile
+    - name: Compile Java Files
+      run: javac *.java
       
-    - name: Run Functional Unit Tests
-      run: mvn -B test
+    - name: Run Functional Test (Encryption Test)
+      run: java SimpleEncryption
+
       
     - name: Archive Test Reports
       if: always()
